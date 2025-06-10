@@ -2843,7 +2843,7 @@ def _check_n_features(estimator, X, reset):
 
 
 def validate_data(
-    _estimator,
+    self,
     /,
     X="no_validation",
     y="no_validation",
@@ -2926,11 +2926,11 @@ def validate_data(
         The validated input. A tuple is returned if both `X` and `y` are
         validated.
     """
-    _check_feature_names(_estimator, X, reset=reset)
-    tags = get_tags(_estimator)
+    _check_feature_names(self, X, reset=reset)
+    tags = get_tags(self)
     if y is None and tags.target_tags.required:
         raise ValueError(
-            f"This {_estimator.__class__.__name__} estimator "
+            f"This {self.__class__.__name__} estimator "
             "requires y to be passed, but the target y is None."
         )
 
@@ -2940,7 +2940,7 @@ def validate_data(
     if no_val_X and no_val_y:
         raise ValueError("Validation should be done on X, y or both.")
 
-    default_check_params = {"estimator": _estimator}
+    default_check_params = {"estimator": self}
     check_params = {**default_check_params, **check_params}
 
     if skip_check_array:
@@ -2972,6 +2972,6 @@ def validate_data(
         out = X, y
 
     if not no_val_X and check_params.get("ensure_2d", True):
-        _check_n_features(_estimator, X, reset=reset)
+        _check_n_features(self, X, reset=reset)
 
     return out
